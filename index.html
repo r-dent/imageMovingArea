@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+    	html, body {
+    		height: 98%;
+    		margin: 0;
+    		padding: 0;
+    	}
+		body {
+			background-color: #eee;
+		}
+    	#container {
+		    width: 80%;
+		    height: 95%;
+		    margin: 2% 10%;
+		    overflow: hidden;
+		    box-shadow: 0 0 40px #333;
+		}
+		#dragger img {
+		    cursor: move;   
+		}
+    </style>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		$('#dragger img').one('load', function(){
+				var largerWidth = $('#container').width() < $('#dragger img').width();
+				var largerHeight = $('#container').height() < $('#dragger img').height();
+				// Ist das Bild größer als der Container?
+				if (largerWidth || largerHeight) {
+				    var containerPos = $('#container').offset();
+					var containmentRect = [
+						largerWidth ? (containerPos.left + $('#container').width() - $('#dragger img').width()) : -1, // Nur wenn Breite größer ist
+						largerHeight ? (containerPos.top + $('#container').height() - $('#dragger img').height()) : -1, // Nur wenn höhe größer ist
+						containerPos.left, 
+						containerPos.top
+						];
+					var options = { containment: containmentRect, scroll: false };
+					if (largerWidth && !largerHeight) {
+					    options.axis = 'x';
+					}
+					if (largerHeight && !largerWidth) {
+					    options.axis = 'y';
+					}
+					$('#dragger').draggable(options);
+				}
+			}).each(function() {
+			  if(this.complete) $(this).load();
+			});
+		});
+    </script>
+</head>
+<body>
+	<div id="container">
+		<div id="dragger">
+		     <img src="http://upload.wikimedia.org/wikipedia/commons/0/0c/Lady_Godiva_%28John_Collier%2C_c._1897%29.jpg" />
+		</div>
+	</div>
+</body>
+</html>
